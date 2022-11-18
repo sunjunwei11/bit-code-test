@@ -1,3 +1,13 @@
+/**
+ *
+ * @param bit string
+ * @returns
+ * 121 => ABA
+ * 1122 => AABB
+ * 13321 => ABBCA
+ * TTYY => AABB
+ * QWWR => ABBC
+ */
 function getABCPattern(bit: string): string {
   const map: {
     [key: number]: string;
@@ -12,6 +22,11 @@ function getABCPattern(bit: string): string {
   return patternArray.join("");
 }
 
+/**
+ *
+ * @param bit string
+ * @returns The count of 0 in the start of string
+ */
 function getPrefix0Nums(bit: string): number {
   let num = 0;
   [...bit].some((item) => {
@@ -24,6 +39,12 @@ function getPrefix0Nums(bit: string): number {
   return num;
 }
 
+/**
+ *
+ * @param letter string
+ * @param repeatNums number
+ * @returns A string repeat repeatNums times
+ */
 function repeatLetter(letter, repeatNums) {
   let res = "";
   for (let i = 0; i < repeatNums; i++) {

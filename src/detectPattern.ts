@@ -28,16 +28,17 @@ function detectPattern(input: string = ""): string {
 // Common Digital patterns
 function detectDigitPattern(bit: string): Patterns {
   const pattern: Patterns = [];
+  // if the length > 6, we think it is a very common digital, and don't give it a special pattern
   if (bit.length <= 6) {
     if (/^0{1,3}\d+$/.test(bit)) {
-      // get '0X' / '00XX' / '000XX'
+      // get '0XX' / '00XX' / '000XX' Pattern
       const prefix0Nums = getPrefix0Nums(bit);
       const Xnums = bit.length - prefix0Nums;
       pattern.push(
         `${repeatLetter("0", prefix0Nums)}${repeatLetter("X", Xnums)}`
       );
     } else {
-      // get 'AAA' / 'ABBA'
+      // get 'AAA' / 'ABBA' Pattern
       const ABCPattern = getABCPattern(bit);
       pattern.push(ABCPattern);
     }
@@ -56,7 +57,7 @@ function detectDigitPattern(bit: string): Patterns {
 function detectLetterPattern(bit: string): Patterns {
   const pattern: Patterns = [];
   if (bit.length <= 6) {
-    // get 'AAA' / 'ABBA'
+    // get 'AAA' / 'ABBA' Pattern
     const ABCPattern = getABCPattern(bit);
     pattern.push(`Letter${ABCPattern}`);
   } else {

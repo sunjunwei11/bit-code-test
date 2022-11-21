@@ -1,3 +1,4 @@
 type Patterns = string[];
+type DetectFunction = (bit: string) => Patterns;
 
-export { Patterns };
+export { Patterns, DetectFunction };

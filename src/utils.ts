@@ -24,23 +24,6 @@ function getABCPattern(bit: string): string {
 
 /**
  *
- * @param bit string
- * @returns The count of 0 in the start of string
- */
-function getPrefix0Nums(bit: string): number {
-  let num = 0;
-  [...bit].some((item) => {
-    if (item === "0") {
-      num++;
-    } else {
-      return true;
-    }
-  });
-  return num;
-}
-
-/**
- *
  * @param letter string
  * @param repeatNums number
  * @returns A string repeat repeatNums times
@@ -53,4 +36,4 @@ function repeatLetter(letter, repeatNums) {
   return res;
 }
 
-export { getABCPattern, getPrefix0Nums, repeatLetter };
+export { getABCPattern, repeatLetter };

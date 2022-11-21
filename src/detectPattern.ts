@@ -1,6 +1,6 @@
 import { Patterns, DetectFunction } from "./types";
 import { _10K, _100K, _00XX, _0x10K } from "./constants";
-import patternsStrategys from "./patternsStrategy";
+import patternsStrategys from "./patternStrategy";
 const { detectDigitPattern, detectLetterPattern, detectDigitalStartwith0x } =
   patternsStrategys;
 

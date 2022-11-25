@@ -74,7 +74,7 @@ interface PatternDetectorItem {
 
 其中 validateFun 用来校验该 bit 是否符合该检测器的规则，如果返回 true 则将 name 作为 pattern，添加到最终要返回的 pattern 数组中
 
-### validateFun 返回对象
+### validateFun 返回对象（根据匹配结果，动态得到 patternName）
 
 同时 validateFun 除了可以返回布尔值之外还可以返回对象，如下：
 
@@ -84,7 +84,8 @@ interface validateFunReturnName {
 }
 ```
 
-如果返回的是对象，则采用对象里的 patternName 作为 pattern 添加到要返回的 pattern 数组中，优先级高于 name
+如果返回的是对象，则采用对象里的 patternName 作为 pattern 添加到要返回的 pattern 数组中，优先级高于 name，用这种方式可以在 validateFun 中动态生成 patternName。
+digitalPatterns 里的 AABB、ABBC 等相关 pattern 的生成使用了此方法，namePatterns 里 name 长度相关的 pattern 也使用了此方法。
 
 ### name 为空字符串
 

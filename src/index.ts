@@ -1,6 +1,11 @@
 import patternDetectors from './patternDetectors';
 import { Patterns, PatternDetectorItem } from './types';
 
+/**
+ *
+ * @param bit {string} 要检测的字符串
+ * @returns {string} 检测到的pattern列表数组
+ */
 function detectPatterns(bit: string): string {
     // 先检测传入的是否是.bit字符串
     if (!bit || typeof bit !== 'string' || !/^.+\.bit$/) {
@@ -12,12 +17,16 @@ function detectPatterns(bit: string): string {
     return patterns.reverse().toString();
 }
 
+/**
+ *
+ * @param bit {string} 要检测的字符串
+ * @param patterns {Patterns} 当前检测到的pattern列表
+ * @param patternDetectors {PatternDetectorItem[]} 后续要执行检测的检测器列表
+ */
 function doDetect(bit: string, patterns: Patterns, patternDetectors: PatternDetectorItem[]) {
     patternDetectors.forEach((detector) => {
         const { name, validateFun, subPatternDetectors } = detector;
-        // 检测该bit是否符合该pattern，如果不符合则不需要再校验相关的Sub Patterns
         const validateFunRes = validateFun(bit);
-        // 若该bit通过了对应的Pattern校验，则将该Pattern的name添加到返回的数组中
         if (validateFunRes) {
             if (typeof validateFunRes === 'object' && validateFunRes.patternName) {
                 // 支持在validate函数中动态设置patternName
@@ -26,10 +35,9 @@ function doDetect(bit: string, patterns: Patterns, patternDetectors: PatternDete
                 // 静态设置的pattenName，大部分情况应该走的这个分支
                 name && patterns.push(name);
             }
-            doDetect(bit, patterns, subPatternDetectors); // 递归
+            doDetect(bit, patterns, subPatternDetectors); // 递归执行检测
         }
     });
-    return patterns.toString();
 }
 
 export { detectPatterns };

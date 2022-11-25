@@ -18,13 +18,6 @@ describe('Detect digital', () => {
             expect(dp('160°.bit')).toBe(String(['Degrees', '3D', 'Digit']));
         });
 
-        // 判断是否是度数
-        test('Detect degree three digital', () => {
-            expect(dp('360°.bit')).toBe(String(['Degrees', '3D', 'Digit']));
-            expect(dp('001°.bit')).toBe(String(['Degrees', '3D', 'Digit']));
-            expect(dp('160°.bit')).toBe(String(['Degrees', '3D', 'Digit']));
-        });
-
         // 判断日语3位数
         test('Detect Japanese three digital', () => {
             expect(dp('零陸参.bit')).toBe(String(['Japanese3D', '3D', 'Digit']));
@@ -70,7 +63,7 @@ describe('Detect digital', () => {
             expect(dp('1169.bit')).toBe(String(['AABC', 'XX69', '10K', '4D', 'Digit']));
         });
 
-        // 判断99乘法表
+        // 判断是不是99乘法表
         test('Detect 99 Multiplication Table', () => {
             expect(dp('1101.bit')).toBe(String(['AABA', 'Birthday', '99Mul', '10K', '4D', 'Digit']));
             expect(dp('4728.bit')).toBe(String(['99Mul', '10K', '4D', 'Digit']));

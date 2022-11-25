@@ -26,7 +26,7 @@ npm run test
     |-- name.test.ts
 ```
 
-2、模式检测器都放在 patternDetectors 目录下
+2、pattern 检测器都放在 patternDetectors 目录下
 
 ```js
 |-- patternDetectors
@@ -36,7 +36,7 @@ npm run test
     |-- namePatterns
 ```
 
-项目检测器是一个大的数组，比如
+最外层的检测器保存在一个大的数组中，比如
 
 ```js
 import { PatternDetectorItem } from '../types';
@@ -72,7 +72,7 @@ interface PatternDetectorItem {
 
 ### validateFun 返回 boolean
 
-其中 validateFun 用来校验该 bit 是否符合该检测器的规则，如果符合则将 name 作为 pattern，添加到最终要返回的 pattern 数组中
+其中 validateFun 用来校验该 bit 是否符合该检测器的规则，如果返回 true 则将 name 作为 pattern，添加到最终要返回的 pattern 数组中
 
 ### validateFun 返回对象
 
@@ -84,17 +84,17 @@ interface validateFunReturnName {
 }
 ```
 
-如果返回的是对象，则采用对象里的 patternName 作为 pattern 添加到要返回的 pattern 数组中
+如果返回的是对象，则采用对象里的 patternName 作为 pattern 添加到要返回的 pattern 数组中，优先级高于 name
 
 ### name 为空字符串
 
-这种情况一般是 validateFun 会返回一个对象高速你 patternName 或者该检测器不用添加 patternName 到最终的数组中，
-该检测器的存在只是为了保存子检测器，作为一个空容器的作用，类似于 Vue 里的`<template></template>`，
-这种情况可以直接在 validateFun 返回 true，让函数进入后续的递归流程，递归 subPatternDetectors 里的检测器
+name 可以为空字符串，这时候如果 validateFun 返回一个对象里面有 patternName 则将该 patternName 添加到要返回的 pattern 数组中，否则不添加。
+
+我们可以将 name 设置为空字符串，然后 validateFun 直接返回 true，这种情况一般用于该检测器不需要添加 pattern，但是它的子检测器需要添加 pattern，该检测器只是作为一个空容器的作用，类似于 Vue 里的`<template></template>`。
 
 ## 子检测器
 
-每一个检测器都有一个 subPatternDetectors 属性，保存他的所有子检测器，比如数字检测器：
+每一个检测器都有一个 subPatternDetectors 属性，保存他的所有子检测器，比如 digitalDetector：
 
 ```js
 const digitalDetector: PatternDetectorItem = {
@@ -114,7 +114,7 @@ const digitalDetector: PatternDetectorItem = {
 };
 ```
 
-数字检测器有很多子检测器，每个子检测器用于检测更细分的 pattern，比如 threeDigitalDetector 做三位数字相关检测，fourDigitalDetector 做四位数相关检测，commonDigitalDetector 做一些和位数关系不大，比较通用的一些检测。
+digitalDetector 有很多子检测器，每个子检测器用于检测更细分的 pattern，比如 threeDigitalDetector 做三位数字相关检测，fourDigitalDetector 做四位数相关检测，commonDigitalDetector 做一些和位数关系不大，比较通用的一些检测。
 
 ## 检测器嵌套
 
@@ -130,10 +130,10 @@ const threeDigitalDetector: PatternDetectorItem = {
 };
 ```
 
-3 位数的检测器又包含了度数检测器、中文数字检测器，日语数字检测器、国旗+数字检测器。
+threeDigitalDetector 又包含了度数检测器、中文数字检测器，日语数字检测器、国旗+数字检测器。
 
 其中当检测器的 validateFun 返回 false 的时候，不会再递归使用 subPatternDetectors 进行检测，避免性能的浪费。
 
 # 新增检测器
 
-如果要对新的 pattern 进行检测，只需要新增新的检测器或者子检测器。
+如果有新增的 pattern 需要检测，只需要新增检测器或者子检测器。
